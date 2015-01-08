@@ -1,0 +1,9 @@
+name = D3 Demo
+description = This module demos D3 with Drupal
+core = 7.x
+package = D3 Demo
+version = 7.x-1.0
+project = d3_demo
+dependencies[] = d3
+
+

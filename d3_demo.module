@@ -1,0 +1,65 @@
+<?php
+/**
+ * @file
+ * Code for the BI Vault Display feature.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function d3_demo_permission() {
+  return array(
+    'administer d3 demo' => array(
+      'title' => t('administer d3 demo'),
+      'description' => t('administer d3 demo'),
+      'restrict access' => TRUE,
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu()
+ */
+function d3_demo_menu() {
+  $items = array();
+
+  // Link for JSON from veeva vault. Adds Head inclusion for exhibit.
+  $items['d3-demo/tweets'] = array(
+    'title' => 'Tweet Graph',
+    'description' => 'Visually represents the tweets related to the query parameter.',
+    'page callback' => 'd3_demo_visual_tweets',
+    'access callback' => true,
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function d3_demo_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools' && !empty($plugin)) {
+    return 'plugins/' . $plugin;
+  }
+}
+
+/**
+ * Implements hook_theme()
+ */
+function d3_demo_theme($existing, $type, $theme, $path) {
+  return array(
+    'd3_demo_tweets' => array(
+      'template' => 'templates/d3_demo_tweets'
+    )
+  );
+}
+/**
+ * Callback for tweet visualisation
+ */
+function d3_demo_visual_tweets() {
+  $module_path = drupal_get_path('module', 'd3_demo');
+  drupal_add_js($module_path . '/d3.v2.js');
+  drupal_add_js($module_path . '/js/showteewts.js');
+  return theme('d3_demo_tweets', array());
+}
